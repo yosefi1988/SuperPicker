@@ -14,15 +14,18 @@ public class PickerManagerBuilder {
     public static final int SELECT_FROM_GALLERY = 0;
     public static final int SELECT_FROM_CAMERA = 1;
     private Activity activity;
+    private boolean crop;
     private onPermissionRefusedListener permissionRefusedListener;
     protected onImageReceivedListener imageReceivedListener;
     private PickerManager pickerManager;
-    public PickerManagerBuilder(Activity activity, int type)
+    public PickerManagerBuilder(Activity activity, boolean crop, int type)
     {
         this.activity = activity;
+        this.crop = crop;
         pickerManager = (type == PickerManagerBuilder.SELECT_FROM_GALLERY) ? new ImagePickerManager(activity) : new CameraPickerManager(activity);
 
     }
+
 
     public interface onPermissionRefusedListener {
         void onPermissionRefused();

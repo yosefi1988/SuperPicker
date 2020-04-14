@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectFromGallery(final Activity activity) {
-        new PickerManagerBuilder(activity, PickerManagerBuilder.SELECT_FROM_GALLERY)
+        new PickerManagerBuilder(activity,false, PickerManagerBuilder.SELECT_FROM_GALLERY)
                 .setOnImageReceivedListener(new PickerManagerBuilder.onImageReceivedListener() {
                     @Override
                     public void onImageReceived(Uri imageUri) {
