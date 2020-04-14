@@ -13,6 +13,8 @@ import android.os.Environment;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.yalantis.ucrop.UCrop;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,12 +28,13 @@ import java.util.Locale;
 public abstract  class PickerManager {
     public static final int REQUEST_CODE_SELECT_IMAGE = 200;
     public static final int REQUEST_CODE_IMAGE_PERMISSION = 201;
+    private final boolean withCrop;
     protected Uri mProcessingPhotoUri;
     private boolean withTimeStamp = true;
     private String folder = null;
     private String imageName;
     protected Activity activity;
-//    private UCrop uCrop;
+    private UCrop uCrop;
     protected PickerManagerBuilder.onImageReceivedListener imageReceivedListener;
     protected PickerManagerBuilder.onPermissionRefusedListener permissionRefusedListener;
     private int cropActivityColor = R.color.colorPrimary;
@@ -46,9 +49,10 @@ public abstract  class PickerManager {
         return this;
     }
 
-    public PickerManager(Activity activity) {
+    public PickerManager(Activity activity,boolean withCrop) {
         this.activity = activity;
         this.imageName = activity.getString(R.string.app_name);
+        this.withCrop = withCrop ;
     }
 
 
@@ -103,8 +107,8 @@ public abstract  class PickerManager {
                 (withTimeStamp ? "_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date(System.currentTimeMillis())) :  "")
                 + ".jpg";
 
-        // long currentTimeMillis = System.currentTimeMillis();
-        // String photoName = imageName + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date(currentTimeMillis)) + ".jpg";
+         long currentTimeMillis = System.currentTimeMillis();
+         String photoName = imageName + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date(currentTimeMillis)) + ".jpg";
         File photo = new File(path, finalPhotoName);
         return Uri.fromFile(photo);
     }
@@ -113,32 +117,36 @@ public abstract  class PickerManager {
 
     }
 
-    @SuppressLint("ResourceAsColor")
-    public void startCropActivity(){
-//        if(uCrop == null)
-//        {
-//            uCrop = UCrop.of(mProcessingPhotoUri, getImageFile())
-//                    .withMaxResultSize(200, 200);
-//            uCrop = uCrop.useSourceImageAspectRatio();
-//            UCrop.Options options = new UCrop.Options();
-//            options.setFreeStyleCropEnabled(true);
-//
-//            options.setToolbarColor(cropActivityColor);
-//            options.setStatusBarColor(cropActivityColor);
-//            options.setActiveWidgetColor(cropActivityColor);
-//            uCrop = uCrop.withOptions(options);
-//        }
-//
-//        uCrop.start(activity);
+    public boolean isWithCrop() {
+        return withCrop;
     }
 
-//    public void handleCropResult(Intent data){
-//        Uri resultUri = UCrop.getOutput(data);
-//        if(imageReceivedListener != null)
-//            imageReceivedListener.onImageReceived(resultUri);
-//
-//        activity.finish();
-//    }
+    @SuppressLint("ResourceAsColor")
+    public void startCropActivity(){
+        if(uCrop == null)
+        {
+            uCrop = UCrop.of(mProcessingPhotoUri, getImageFile())
+                    .withMaxResultSize(200, 200);
+            uCrop = uCrop.useSourceImageAspectRatio();
+            UCrop.Options options = new UCrop.Options();
+            options.setFreeStyleCropEnabled(true);
+
+            options.setToolbarColor(cropActivityColor);
+            options.setStatusBarColor(cropActivityColor);
+//            options.setActiveWidgetColor(cropActivityColor);
+            uCrop = uCrop.withOptions(options);
+        }
+
+        uCrop.start(activity);
+    }
+
+    public void handleCropResult(Intent data){
+        Uri resultUri = UCrop.getOutput(data);
+        if(imageReceivedListener != null)
+            imageReceivedListener.onImageReceived(resultUri);
+
+        activity.finish();
+    }
 
     public void handleCropResult(Uri data){
         if(imageReceivedListener != null)
@@ -172,8 +180,8 @@ public abstract  class PickerManager {
         return this;
     }
 
-//    public PickerManager setCustomizedUcrop(UCrop customizedUcrop) {
-//        this.uCrop = customizedUcrop;
-//        return this;
-//    }
+    public PickerManager setCustomizedUcrop(UCrop customizedUcrop) {
+        this.uCrop = customizedUcrop;
+        return this;
+    }
 }

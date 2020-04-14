@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.yalantis.ucrop.UCrop;
+
 
 /**
  * Created by Mickael on 13/10/2016.
@@ -14,15 +16,15 @@ public class PickerManagerBuilder {
     public static final int SELECT_FROM_GALLERY = 0;
     public static final int SELECT_FROM_CAMERA = 1;
     private Activity activity;
-    private boolean crop;
+    private boolean withCrop;
     private onPermissionRefusedListener permissionRefusedListener;
     protected onImageReceivedListener imageReceivedListener;
     private PickerManager pickerManager;
     public PickerManagerBuilder(Activity activity, boolean crop, int type)
     {
         this.activity = activity;
-        this.crop = crop;
-        pickerManager = (type == PickerManagerBuilder.SELECT_FROM_GALLERY) ? new ImagePickerManager(activity) : new CameraPickerManager(activity);
+        this.withCrop = crop;
+        pickerManager = (type == PickerManagerBuilder.SELECT_FROM_GALLERY) ? new ImagePickerManager(activity,withCrop) : new CameraPickerManager(activity,withCrop);
 
     }
 
@@ -74,9 +76,9 @@ public class PickerManagerBuilder {
         return this;
     }
 
-//    public PickerBuilder setCustomizedUcrop(UCrop ucrop) {
-//        pickerManager.setCustomizedUcrop(ucrop);
-//        return this;
-//    }
+    public PickerManagerBuilder setCustomizedUcrop(UCrop ucrop) {
+        pickerManager.setCustomizedUcrop(ucrop);
+        return this;
+    }
 
 }

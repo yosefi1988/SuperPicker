@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-//import static com.yalantis.ucrop.UCrop.REQUEST_CROP;
-
-//import static com.yalantis.ucrop.UCrop.REQUEST_CROP;
+import static com.yalantis.ucrop.UCrop.REQUEST_CROP;
+import static ir.sajjadyosefi.android.superpickerlibrary.PickerManager.REQUEST_CODE_SELECT_IMAGE;
 
 
 public class TempActivity extends Activity {
@@ -32,7 +31,7 @@ public class TempActivity extends Activity {
             return;
         }
         switch (requestCode) {
-            case PickerManager.REQUEST_CODE_SELECT_IMAGE:
+            case REQUEST_CODE_SELECT_IMAGE:
                 Uri uri;
                 if (data != null)
                     uri = data.getData();
@@ -40,16 +39,19 @@ public class TempActivity extends Activity {
                     uri = pickerManager.getImageFile();
 
                 pickerManager.setUri(uri);
-//                pickerManager.startCropActivity();
-                pickerManager.handleCropResult(uri);
+
+                if (pickerManager.isWithCrop() == false)
+                    pickerManager.handleCropResult(uri);
+                else
+                    pickerManager.startCropActivity();
 
                 break;
-//            case REQUEST_CROP:
-//                if (data != null) {
-//                    pickerManager.handleCropResult(data);
-//                } else
-//                    finish();
-//                break;
+            case REQUEST_CROP:
+                if (data != null) {
+                    pickerManager.handleCropResult(data);
+                } else
+                    finish();
+                break;
         }
     }
 

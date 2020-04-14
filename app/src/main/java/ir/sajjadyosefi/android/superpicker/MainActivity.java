@@ -23,16 +23,46 @@ public class MainActivity extends AppCompatActivity {
         final Activity activity = this;
 
         imageView = findViewById(R.id.imageView);
-        ((Button)(findViewById(R.id.button))).setOnClickListener(new View.OnClickListener() {
+        ((Button)(findViewById(R.id.buttonGallery))).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectFromGallery(activity);
             }
         });
+        ((Button)(findViewById(R.id.buttonCamera))).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectFromCamera(activity);
+            }
+        });
     }
 
     private void selectFromGallery(final Activity activity) {
-        new PickerManagerBuilder(activity,false, PickerManagerBuilder.SELECT_FROM_GALLERY)
+        new PickerManagerBuilder(activity,true, PickerManagerBuilder.SELECT_FROM_GALLERY)
+                .setOnImageReceivedListener(new PickerManagerBuilder.onImageReceivedListener() {
+                    @Override
+                    public void onImageReceived(Uri imageUri) {
+                        Toast.makeText(activity,"Got image - " + imageUri, Toast.LENGTH_LONG).show();
+                        imageView.setImageURI(imageUri);
+
+//                        File map1 = new File();
+//                        map1.setTitle(LastFileSelected.substring(LastFileSelected.lastIndexOf("/")+1));
+//                        map1.setRequestContentId(1);
+//                        map1.setFrame(1);
+//                        map1.setFileType(MAP_1);
+//                        map1.setUri(LastFileSelected);
+//                        map1.setType(FILES);
+//                        Global.CurrentTask.sendToServerfileList.add(map1);
+//                        adapter_Posts.notifyDataSetChanged();
+
+                    }
+                })
+                .setImageName("avatar")
+                .start();
+    }
+
+    private void selectFromCamera(final Activity activity) {
+        new PickerManagerBuilder(activity,true, PickerManagerBuilder.SELECT_FROM_CAMERA)
                 .setOnImageReceivedListener(new PickerManagerBuilder.onImageReceivedListener() {
                     @Override
                     public void onImageReceived(Uri imageUri) {
