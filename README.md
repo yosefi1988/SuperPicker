@@ -40,6 +40,7 @@ for example /
     }
 ```
 
-![alt text](https://raw.githubusercontent.com/yosefi1988/beautifulprogressbar/master/app/src/main/res/drawable/device20190917083815.gif)
+برای رفع مشکل احتمالی یا سفارشی سازی کتابخانه با شماره زیر تماس بگیرید:
+09123678522
 
 
