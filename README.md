@@ -8,6 +8,11 @@ Using this library, simply select your desired image from the gallery or take it
 It is also possible to cut, rotate and resize the image.
 How to use is taught below:
 
+فایل های مورد نیاز در مسیر زیر قرار دارند :
+
+SuperPicker/aarfiles/
+
+
 for example / 
 برای مثال
 ```java
